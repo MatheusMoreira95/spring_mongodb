@@ -1,5 +1,6 @@
 package com.example.demo.resources;
 
+import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.services.UserService;
@@ -33,6 +34,14 @@ public class UserResource {
         return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
+    }
+
+
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody User obj) {
         obj = service.insert(obj);
@@ -54,5 +63,6 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.noContent().build();
     }
+
 
 }
